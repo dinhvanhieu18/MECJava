@@ -27,11 +27,6 @@ public class CarSimulator extends Object {
     }
 
     public void collectMessage(double currentTime, Network network) {
-        // ArrayList<Message> res = super.collectMessage(currentTime);
-        // ArrayList<Message> genMessages = CarMethod.generateMessage(this, currentTime);
-        // numTask += genMessages.size();
-        // res.addAll(genMessages);
-        // return res;
         super.collectMessage(currentTime, network);
         CarMethod.generateMessage(this, currentTime, network);
     }    

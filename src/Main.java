@@ -2,10 +2,8 @@ package src;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 import src.object.CarSimulator;
-import src.object.Message;
 import src.object.Network;
 import src.object.RsuSimulator;
 
@@ -56,16 +54,9 @@ public class Main {
         ArrayList<CarSimulator> carList = getCarList();
         System.out.println(carList.size());
         Network network = new Network(rsuList, carList);
-        // for (RsuSimulator rsu : rsuList) {
-        //     System.out.println(rsu.id + " " + rsu.xcord + " " + rsu.ycord + " " + rsu.zcord);
-        // }
+
         network.run();
-        // for (CarSimulator car : carList) {
-        //     System.out.println("car " + car.id + " have neighbors: ");
-        //     for (CarSimulator car_ : car.neighborCars) {
-        //         System.out.println(car_.id);
-        //     }
-        // }
+        
     }
     public static void main(String[] args) {
         double startTime = System.currentTimeMillis();

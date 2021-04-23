@@ -56,7 +56,6 @@ public class Network {
 
     public void working(double currentTime) {
         System.out.println(Config.expName + " " + Config.carPackageStrategy + " current time " + currentTime);
-        // ArrayList<Message> messages = new ArrayList<>();
         for (CarSimulator car : carList) {
             if (car.getPosition(currentTime) > Config.roadLength || car.startTime > currentTime) {
                 continue;
@@ -68,9 +67,7 @@ public class Network {
             rsu.collectMessage(currentTime, this);
         }
         gnb.collectMessage(currentTime, this);
-        // for (Message mes : messages) {
-        //     queue.add(mes);
-        // }
+        
         while (!queue.isEmpty()) {
             Message mes = queue.poll();
             int location = mes.locations.get(mes.locations.size()-1);

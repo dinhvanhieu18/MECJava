@@ -25,18 +25,6 @@ public class Object {
     public int numTask = 0;
 
     public void collectMessage(double currentTime, Network network) {
-        // @SuppressWarnings("unchecked") ArrayList<Message> tmp = (ArrayList<Message>)waitList.clone();
-        // waitList.clear();
-        // ArrayList<Message> res = new ArrayList<>();
-        // for (Message mes : tmp) {
-        //     if (mes.currentTime > currentTime + Config.cycleTime) {
-        //         waitList.add(mes);
-        //     }
-        //     else {
-        //         res.add(mes);
-        //     }
-        // }
-        // return res;
         while (!waitList.isEmpty()) {
             Message mes = waitList.poll();
             if (mes.currentTime > currentTime + Config.cycleTime) {
