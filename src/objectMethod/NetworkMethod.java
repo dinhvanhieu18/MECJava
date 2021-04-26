@@ -24,7 +24,14 @@ public class NetworkMethod {
                 }
                 mes.setType();
                 fileWriterMessageDetail.write(mes.stt + "\t" + mes.indexCar.get(0) + "\t" + mes.startTime + 
-                                        " \t" + mes.currentTime + "\t" + delay + "\t" + mes.type + "\n");            
+                                        " \t" + mes.currentTime + "\t" + delay + "\t" + mes.type + "\n");    
+                if (mes.indexRsu.size() > 0) {
+                    if (mes.locations.contains(2)) {
+                        network.cntType3 ++;
+                    }
+                    else network.cntType2 ++;
+                }        
+                else network.cntType1 ++;
             }
             double meanDelay = (network.meanDelay + network.countDrop * network.maxDelay) / network.totalOutsize;
             fileWriterDelayDetail.write(currentTime + "\t" + meanDelay + "\t" + network.maxDelay + 
@@ -46,7 +53,7 @@ public class NetworkMethod {
             fileWriterDelayGeneral.write(Config.carPackageStrategy + "\t" + Config.carAppearStrategy + "\t" + 
                                 Config.rsuNumbers + "\t" + Config.expName + "\t" + meanDelay + "\t" + 
                                 network.countDrop + "\t" + network.totalOutsize + "\t" + Config.pL + "\t" + 
-                                Config.pR + "\n");
+                                Config.pR + "\t" + network.cntType1 + "\t" + network.cntType2 + "\t" + network.cntType3 + "\n");
             fileWriterDelayGeneral.close();
         } catch (Exception e) {
             e.printStackTrace();

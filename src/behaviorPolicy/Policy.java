@@ -1,15 +1,13 @@
 package src.behaviorPolicy;
 
-import java.util.ArrayList;
-
 public class Policy {
 
-    public int getAction(ArrayList<Double> values, ArrayList<Integer> excludes) {
+    public int getAction(double[] values, double[] excludes) {
         int res = 0;
         return res;
     }
     
-    public int getAction(ArrayList<Double> values) {
+    public int getAction(double[] values) {
         int res = 0;
         return res;
     }

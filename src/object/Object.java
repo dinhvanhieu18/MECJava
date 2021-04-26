@@ -26,12 +26,12 @@ public class Object {
 
     public void collectMessage(double currentTime, Network network) {
         while (!waitList.isEmpty()) {
-            Message mes = waitList.poll();
+            Message mes = waitList.peek();
             if (mes.currentTime > currentTime + Config.cycleTime) {
                 break;
             }
             else {
-                network.queue.add(mes);
+                network.queue.add(waitList.poll());
             }
         }
     }

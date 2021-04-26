@@ -4,7 +4,7 @@ import src.Config;
 import src.Utils;
 import src.Utils.ResGetAction;
 import src.objectMethod.RsuMethod;
-import src.optimizers.Optimizer;
+import src.optimizer.Optimizer;
 
 public class RsuSimulator extends Object{
     public int id;
@@ -18,14 +18,7 @@ public class RsuSimulator extends Object{
         this.xcord = xcord;
         this.ycord = ycord;
         this.zcord = zcord;
-    }
-
-    public RsuSimulator(int id, double xcord, double ycord, double zcord,Optimizer optimizer) {
-        this.id = id;
-        this.xcord = xcord;
-        this.ycord = ycord;
-        this.zcord = zcord;
-        this.optimizer = optimizer;
+        this.optimizer = Utils.getOptimizer("rsu_"+id, Config.nStatesRsu, Config.nActionsRsu);
     }
 
     public void sendToCar(CarSimulator car, Message message, double currentTime, Network network) {

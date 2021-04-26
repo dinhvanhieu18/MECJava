@@ -100,7 +100,9 @@ public class Config {
 	public static double rsuCarMeanTranfer = getInstance().getAsDouble("rsu_car_mean_tranfer");
 	public static double rsuRsuMeanTranfer = getInstance().getAsDouble("rsu_rsu_mean_tranfer");
 	public static double rsuGnbMeanTranfer = getInstance().getAsDouble("rsu_gnb_mean_tranfer");
-	
+	public static int nStatesRsu = getInstance().getAsInteger("number_state_rsu");
+	public static int nActionsRsu = getInstance().getAsInteger("number_action_rsu");
+
 	// Car config
 	public static int carSpeed = getInstance().getAsInteger("car_speed");
 	public static String carAppearStrategy = getInstance().getAsString("car_appear_strategy");
@@ -110,7 +112,9 @@ public class Config {
 	public static double carCarMeanTranfer = getInstance().getAsDouble("car_car_mean_tranfer");
 	public static double carRsuMeanTranfer = getInstance().getAsDouble("car_rsu_mean_tranfer");
 	public static double carGnbMeanTranfer = getInstance().getAsDouble("car_gnb_mean_tranfer");
-    
+    public static int nStatesCar = getInstance().getAsInteger("number_state_car");
+	public static int nActionsCar = getInstance().getAsInteger("number_action_car");
+
     // Other
 	public static double pL = getInstance().getAsDouble("default_pl");
 	public static double pR = getInstance().getAsDouble("default_pr");
@@ -122,9 +126,12 @@ public class Config {
 	public static String dumpDelayGeneral = getInstance().getAsString("dump_delay_general");
 	public static String messageDetail = getInstance().getAsString("message_detail");
 	public static String loggingFile = getInstance().getAsString("logging_file");
-    public static String resultFolder = getInstance().getAsString("result_folder");
-    public static String expName = getInstance().getAsString("exp_name");
-    public static String obtimizer = getInstance().getAsString("optimizer");
+	public static String resultFolder = getInstance().getAsString("result_folder");
+	public static String expName = getInstance().getAsString("expName");
+	public static String optimizer = getInstance().getAsString("optimizer");
+	
+	public static double epsilon = getInstance().getAsDouble("epsilon");
+	public static double w = getInstance().getAsDouble("w");
 	
 	static String[] carPackageStrategyStrings = carPackageStrategy.split("_");
 	static String numMessagePerSecondString = carPackageStrategyStrings[carPackageStrategyStrings.length-1];

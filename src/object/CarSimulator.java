@@ -6,7 +6,7 @@ import src.Config;
 import src.Utils;
 import src.Utils.ResGetAction;
 import src.objectMethod.CarMethod;
-import src.optimizers.Optimizer;
+import src.optimizer.Optimizer;
 
 public class CarSimulator extends Object {
     public int id;
@@ -15,15 +15,10 @@ public class CarSimulator extends Object {
     public ArrayList<CarSimulator> neighborCars = new ArrayList<>();
     public RsuSimulator neighborRsu;
 
-    public CarSimulator(int id, double startTime, Optimizer optimizer) {
-        this.id = id;
-        this.startTime = startTime;
-        this.optimizer = optimizer;
-    }
-    
     public CarSimulator(int id, double startTime) {
         this.id = id;
         this.startTime = startTime;
+        this.optimizer = Utils.getOptimizer("car_"+id, Config.nStatesCar, Config.nActionsCar);
     }
 
     public void collectMessage(double currentTime, Network network) {

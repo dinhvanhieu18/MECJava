@@ -25,16 +25,33 @@ public class RsuMethod {
         );
     }
 
+    public static double[] getState(RsuSimulator rsu, Message message, Network network) {
+        double[] res = new double[Config.nStatesRsu];
+        res[0] = rsu.meanDelayProcess;
+        res[1] = rsu.meanDelaySendToGnb;
+        res[2] = rsu.numTask;
+        res[3] = network.gnb.numTask;
+        return res;
+    }
+
     public static ResGetAction getAction(RsuSimulator rsu, Message message, double currentTime, Network network) {
         ResGetAction res;
-        Random random = new Random();
-        double rand = random.nextDouble();
-        int actionByPolicy;
-        if (rand < Config.pR) {
-            actionByPolicy = 0;
+        int actionByPolicy = 0;
+        if (rsu.optimizer != null) {
+            double[] state = getState(rsu, message, network);
+            actionByPolicy = rsu.optimizer.getAction(state);
+            rsu.optimizer.addToMemoryTmp(message, state, actionByPolicy);
         }
         else {
-            actionByPolicy = 1;
+            Random random = new Random();
+            double rand = random.nextDouble();
+            
+            if (rand < Config.pR) {
+                actionByPolicy = 0;
+            }
+            else {
+                actionByPolicy = 1;
+            }
         }
         if (actionByPolicy == 0) {
             res = new ResGetAction(2, network.gnb);

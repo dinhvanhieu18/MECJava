@@ -42,16 +42,33 @@ public class CarMethod {
         );
     }
 
+    public static double[] getState(CarSimulator car, Message message, Network network) {
+        double[] res = new double[Config.nStatesCar];
+        res[0] = car.meanDelaySendToRsu;
+        res[1] = car.meanDelaySendToGnb;
+        res[2] = car.neighborRsu.numTask;
+        res[3] = network.gnb.numTask;
+        return res;
+    }
+
     public static ResGetAction getAction(CarSimulator car, Message message, double currentTime, Network network) {
         ResGetAction res;
-        Random random = new Random();
-        double rand = random.nextDouble();
-        int actionByPolicy;
-        if (rand < Config.pL) {
-            actionByPolicy = 0;
+        int actionByPolicy = 0;
+        if (car.optimizer != null) {
+            double[] state = getState(car, message, network);
+            actionByPolicy = car.optimizer.getAction(state);
+            car.optimizer.addToMemoryTmp(message, state, actionByPolicy);
         }
         else {
-            actionByPolicy = 1;
+            Random random = new Random();
+            double rand = random.nextDouble();
+            
+            if (rand < Config.pL) {
+                actionByPolicy = 0;
+            }
+            else {
+                actionByPolicy = 1;
+            }
         }
         if (actionByPolicy == 0) {
             res = new ResGetAction(2, network.gnb);
