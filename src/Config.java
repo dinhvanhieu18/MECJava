@@ -115,7 +115,8 @@ public class Config {
     public static int nStatesCar = getInstance().getAsInteger("number_state_car");
 	public static int nActionsCar = getInstance().getAsInteger("number_action_car");
 
-    // Other
+	// Other
+	public static double decayRateMean = getInstance().getAsDouble("decay_rate_mean");
 	public static double pL = getInstance().getAsDouble("default_pl");
 	public static double pR = getInstance().getAsDouble("default_pr");
 	public static double simTime = getInstance().getAsDouble("simTime");

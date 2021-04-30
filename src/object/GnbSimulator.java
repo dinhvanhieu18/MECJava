@@ -15,7 +15,7 @@ public class GnbSimulator extends Object {
     }
 
     public void process(Message message, double currentTime, Network network) {
-        simulateProcessTime(Config.rsuProcessPerSecond, message);
+        simulateProcessTime(Config.gnbProcessPerSecond, message);
         addToNextPosition(this, message, currentTime, network);
     }
 
