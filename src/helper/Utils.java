@@ -1,9 +1,10 @@
-package src;
+package src.helper;
 
 import java.util.Random;
 import src.object.Object;
 import src.object.RsuSimulator;
 import src.optimizer.Mab;
+import src.optimizer.Dqn;
 import src.optimizer.Optimizer;
 import src.object.CarSimulator;
 import src.object.Message;
@@ -28,6 +29,9 @@ public class Utils {
         Optimizer optimizer = null;
         if (Config.optimizer.equals("MAB")) {
             optimizer = new Mab(agentName, nStates, nActions);
+        }
+        else if (Config.optimizer.equals("DQN")) {
+            optimizer = new Dqn(agentName, nStates, nActions);
         }
         return optimizer;
     }

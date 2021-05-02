@@ -1,7 +1,8 @@
 package src.object;
 
-import src.Config;
-import src.Utils;
+import src.helper.Config;
+import src.helper.Utils;
+
 import java.util.PriorityQueue;
 
 public class Object {
@@ -65,5 +66,9 @@ public class Object {
         else {
             network.queue.add(message);
         }
+    }
+
+    public double[] getState(Message message, Network network) {
+        return new double[0];
     }
 }

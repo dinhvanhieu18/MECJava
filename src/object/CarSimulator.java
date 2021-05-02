@@ -2,9 +2,9 @@ package src.object;
 
 import java.util.ArrayList;
 
-import src.Config;
-import src.Utils;
-import src.Utils.ResGetAction;
+import src.helper.Config;
+import src.helper.Utils;
+import src.helper.Utils.ResGetAction;
 import src.objectMethod.CarMethod;
 import src.optimizer.Optimizer;
 
@@ -108,5 +108,9 @@ public class CarSimulator extends Object {
 
     public double distanceToRsu(RsuSimulator rsu, double currentTime) {
         return CarMethod.distanceToRsu(this, rsu, currentTime);
+    }
+
+    public double[] getState(Message message, Network network) {
+        return CarMethod.getState(this, message, network);
     }
 }

@@ -3,7 +3,7 @@ package src.object;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-import src.Config;
+import src.helper.Config;
 import src.objectMethod.NetworkMethod;
 
 public class Network {

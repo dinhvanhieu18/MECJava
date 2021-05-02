@@ -1,8 +1,8 @@
 package src.optimizerMethod;
 
-import src.Config;
 import src.behaviorPolicy.Policy;
 import src.behaviorPolicy.SigmoidExplore;
+import src.helper.Config;
 import src.object.Message;
 import src.optimizer.Mab;
 

@@ -1,8 +1,8 @@
 package src.object;
 
-import src.Config;
-import src.Utils;
-import src.Utils.ResGetAction;
+import src.helper.Config;
+import src.helper.Utils;
+import src.helper.Utils.ResGetAction;
 import src.objectMethod.RsuMethod;
 import src.optimizer.Optimizer;
 
@@ -99,5 +99,9 @@ public class RsuSimulator extends Object{
 
     public double distanceToRsu(RsuSimulator rsu) {
         return RsuMethod.distanceToRsu(this, rsu);
+    }
+
+    public double[] getState(Message message, Network network) {
+        return RsuMethod.getState(this, message, network);
     }
 }

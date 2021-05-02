@@ -1,7 +1,7 @@
 package src.object;
 
-import src.Config;
-import src.Utils;
+import src.helper.Config;
+import src.helper.Utils;
 
 public class GnbSimulator extends Object {
     public void sendToCar(CarSimulator car, Message message, double currentTime, Network network) {

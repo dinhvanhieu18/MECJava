@@ -1,4 +1,4 @@
-package src;
+package src.helper;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -115,6 +115,19 @@ public class Config {
     public static int nStatesCar = getInstance().getAsInteger("number_state_car");
 	public static int nActionsCar = getInstance().getAsInteger("number_action_car");
 
+	// Policy
+	public static double epsilon = getInstance().getAsDouble("epsilon");
+	public static double w = getInstance().getAsDouble("w");
+
+	// DQN
+	public static double learningRate = getInstance().getAsDouble("learning_rate");
+	public static double discountingFactor = getInstance().getAsDouble("discounting_factor");
+	public static int batchSize = getInstance().getAsInteger("batch_size");
+	public static int memoryCapacity = getInstance().getAsInteger("memory_capacity");
+	public static int timeUpdateOnlineModel = getInstance().getAsInteger("time_update_online_model");
+	public static int timeUpdateTargetModel = getInstance().getAsInteger("time_update_target_model");
+	public static int hiddenLayer = getInstance().getAsInteger("hidden_layer");
+
 	// Other
 	public static double decayRateMean = getInstance().getAsDouble("decay_rate_mean");
 	public static double pL = getInstance().getAsDouble("default_pl");
@@ -130,9 +143,6 @@ public class Config {
 	public static String resultFolder = getInstance().getAsString("result_folder");
 	public static String expName = getInstance().getAsString("expName");
 	public static String optimizer = getInstance().getAsString("optimizer");
-	
-	public static double epsilon = getInstance().getAsDouble("epsilon");
-	public static double w = getInstance().getAsDouble("w");
 	
 	static String[] carPackageStrategyStrings = carPackageStrategy.split("_");
 	static String numMessagePerSecondString = carPackageStrategyStrings[carPackageStrategyStrings.length-1];

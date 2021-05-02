@@ -2,7 +2,7 @@ package src.objectMethod;
 
 import java.io.FileWriter;
 
-import src.Config;
+import src.helper.Config;
 import src.object.Message;
 import src.object.Network;
 

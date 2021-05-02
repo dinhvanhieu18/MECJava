@@ -2,9 +2,9 @@ package src.objectMethod;
 
 import java.util.Random;
 
-import src.Utils;
-import src.Utils.ResGetAction;
-import src.Config;
+import src.helper.Config;
+import src.helper.Utils;
+import src.helper.Utils.ResGetAction;
 import src.object.CarSimulator;
 import src.object.Message;
 import src.object.Network;
@@ -55,9 +55,7 @@ public class CarMethod {
         ResGetAction res;
         int actionByPolicy = 0;
         if (car.optimizer != null) {
-            double[] state = getState(car, message, network);
-            actionByPolicy = car.optimizer.getAction(state);
-            car.optimizer.addToMemoryTmp(message, state, actionByPolicy);
+            actionByPolicy = car.optimizer.getAction(car, message, network);
         }
         else {
             Random random = new Random();

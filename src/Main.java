@@ -3,6 +3,7 @@ package src;
 import java.io.File;
 import java.util.ArrayList;
 
+import src.helper.Config;
 import src.object.CarSimulator;
 import src.object.Network;
 import src.object.RsuSimulator;

@@ -3,6 +3,8 @@ package src.optimizer;
 import src.behaviorPolicy.Policy;
 
 import src.object.Message;
+import src.object.Network;
+import src.object.Object;
 
 public class Optimizer {
     public String agentName;
@@ -10,14 +12,9 @@ public class Optimizer {
     public int nActions;
     public Policy policy;
 
-    public void addToMemoryTmp(Message message, double[] state, int action) {}
-
     public void updateReward(Message message, double delay) {}
 
-    public void updateState(Message message, double[] state) {}
-
-    public int getAction(double[] state) {
-        int res = 0;
-        return res;
+    public int getAction(Object object, Message message, Network network) {
+        return 0;
     }
 }

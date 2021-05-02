@@ -3,6 +3,8 @@ package src.optimizer;
 import java.util.Hashtable;
 
 import src.object.Message;
+import src.object.Network;
+import src.object.Object;
 import src.optimizerMethod.MabMethod;
 
 public class Mab extends Optimizer{
@@ -19,15 +21,13 @@ public class Mab extends Optimizer{
         this.policy = MabMethod.getBehaviorPolicy();
     }
 
-    public void addToMemoryTmp(Message message, double[] state, int action) {
-        MabMethod.addToMemoryTmp(this, message, action);
-    }
-
     public void updateReward(Message message, double delay) {
         MabMethod.updateReward(this, message, delay);
     }
 
-    public int getAction(double[] state) {
-        return policy.getAction(values);
+    public int getAction(Object object, Message message, Network network) {
+        int action = policy.getAction(values);
+        MabMethod.addToMemoryTmp(this, message, action);
+        return action;
     }
 }

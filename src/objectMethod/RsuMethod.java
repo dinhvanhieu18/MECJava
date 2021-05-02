@@ -2,8 +2,8 @@ package src.objectMethod;
 
 import java.util.Random;
 
-import src.Config;
-import src.Utils.ResGetAction;
+import src.helper.Config;
+import src.helper.Utils.ResGetAction;
 import src.object.CarSimulator;
 import src.object.Message;
 import src.object.Network;
@@ -38,9 +38,7 @@ public class RsuMethod {
         ResGetAction res;
         int actionByPolicy = 0;
         if (rsu.optimizer != null) {
-            double[] state = getState(rsu, message, network);
-            actionByPolicy = rsu.optimizer.getAction(state);
-            rsu.optimizer.addToMemoryTmp(message, state, actionByPolicy);
+            actionByPolicy = rsu.optimizer.getAction(rsu, message, network);
         }
         else {
             Random random = new Random();
