@@ -34,9 +34,7 @@ public class DqnMethod {
                 dqn.cnt ++;
             }
         }
-        if (dqn.stable) {
-            update(dqn);
-        }
+        update(dqn);
     }
 
     public static void updateState(Dqn dqn, Message message, double[] state) {

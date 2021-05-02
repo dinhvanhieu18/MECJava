@@ -128,6 +128,11 @@ public class Config {
 	public static int timeUpdateTargetModel = getInstance().getAsInteger("time_update_target_model");
 	public static int hiddenLayer = getInstance().getAsInteger("hidden_layer");
 
+	// MAB + DQN
+	public static double minProbChooseMab = getInstance().getAsDouble("min_prob_choose_mab");
+	public static double decayRateChooseMab = getInstance().getAsDouble("decay_rate_prob_choose_mab");
+	public static double thresholdStable = getInstance().getAsDouble("threadhold_stable");
+
 	// Other
 	public static double decayRateMean = getInstance().getAsDouble("decay_rate_mean");
 	public static double pL = getInstance().getAsDouble("default_pl");

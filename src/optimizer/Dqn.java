@@ -28,7 +28,6 @@ public class Dqn extends Optimizer {
         this.targetModel = new NeuralNetwork(nStates, Config.hiddenLayer, nActions, alpha);
         this.memory = new Memory(Config.memoryCapacity);
         this.cnt = 0;
-        this.stable = true;
     }
     
     public void updateReward(Message message, double delay) {
