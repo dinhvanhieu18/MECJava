@@ -1,0 +1,1 @@
+cd /home/aimenext/hieudv/MECJava ; /usr/bin/env /usr/lib/jvm/java-11-openjdk-amd64/bin/java -Dfile.encoding=UTF-8 -cp /home/aimenext/.config/Code/User/workspaceStorage/76d7857910da8984edbdf63f65e9f534/redhat.java/jdt_ws/MECJava_d9d7d77c/bin src.Main
