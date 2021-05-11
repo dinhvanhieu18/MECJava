@@ -46,7 +46,7 @@ bash script.sh 0.0 0.0 poisson_70 deu_5 5 150\;450\;750\;1050\;1350  1\;1\;1\;1\
 bash script.sh 0.0 0.0 poisson_70 deu_5 5 150\;450\;750\;1050\;1350  1\;1\;1\;1\;1  10\;10\;10\;10\;10 DQN DQN poisson_0.4
 bash script.sh 0.0 0.0 poisson_70 deu_5 5 150\;450\;750\;1050\;1350  1\;1\;1\;1\;1  10\;10\;10\;10\;10 MAB_DQN MAB_DQN poisson_0.4
 
-
+ 
 
 
 

@@ -57,8 +57,9 @@ public class Main {
         Network network = new Network(rsuList, carList);
 
         network.run();
-        
+          
     }
+    
     public static void main(String[] args) {
         double startTime = System.currentTimeMillis();
         run();

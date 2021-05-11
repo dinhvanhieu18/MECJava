@@ -29,8 +29,11 @@ public class RsuMethod {
         double[] res = new double[Config.nStatesRsu];
         res[0] = rsu.meanDelayProcess;
         res[1] = rsu.meanDelaySendToGnb;
-        res[2] = rsu.numTask;
-        res[3] = network.gnb.numTask;
+        res[2] = rsu.sumCpuCycle / Config.rsuProcessPerSecond;
+        res[3] = network.gnb.sumSize * Config.rsuGnbMeanTranfer;
+        res[4] = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
+        res[5] = message.size;
+        res[6] = message.cpuCycle;
         return res;
     }
 

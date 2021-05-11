@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Message implements Comparable<Message>{
     public static int cnt = 0;
-    public int size = 1;
-    public int cpuCycle = 1;
+    public double size = 1.0;
+    public double cpuCycle = 1.0;
     public int stt;
     public double startTime;
     public double currentTime;
@@ -19,7 +19,7 @@ public class Message implements Comparable<Message>{
     public ArrayList<Integer> locations = new ArrayList<>();
     // locations: 0:car, 1:rsu, 2:gnb
     
-    public Message(int indexCar, double time, int size, int cpuCycle) {
+    public Message(int indexCar, double time, double size, double cpuCycle) {
         this.indexCar.add(indexCar);
         this.locations.add(0);
         this.startTime = time;

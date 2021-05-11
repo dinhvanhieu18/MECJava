@@ -15,13 +15,17 @@ public class CarMethod {
         double preTime = currentTime;
         while (true) {
             double nextTime = preTime + Utils.getNext(Config.numMessagePerSecond);
+            double size = Utils.getNext(Config.messageSize);
+            double cpuCycle = Utils.getNext(Config.messageCpuCycle);
             if (nextTime > currentTime + Config.cycleTime) {
                 return;
             }
             else {
-                Message mes = new Message(car.id, nextTime);
+                Message mes = new Message(car.id, nextTime, size, cpuCycle);
                 network.queue.add(mes);
                 car.numTask ++;
+                car.sumSize += size;
+                car.sumCpuCycle += cpuCycle;
                 preTime = nextTime;
             }
         }
@@ -46,8 +50,12 @@ public class CarMethod {
         double[] res = new double[Config.nStatesCar];
         res[0] = car.meanDelaySendToRsu;
         res[1] = car.meanDelaySendToGnb;
-        res[2] = car.neighborRsu.numTask;
-        res[3] = network.gnb.numTask;
+        res[2] = car.neighborRsu.sumSize * Config.carRsuMeanTranfer;
+        res[3] = car.neighborRsu.sumCpuCycle / Config.rsuProcessPerSecond;
+        res[4] = network.gnb.sumSize * Config.carGnbMeanTranfer;
+        res[5] = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
+        res[6] = message.size;
+        res[7] = message.cpuCycle;
         return res;
     }
 

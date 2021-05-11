@@ -25,4 +25,6 @@ public class MabMethod {
         mab.values[action] = (1 - lr) * mab.values[action] + lr * reward;
     }
 
+    // public static void update(Mab mab, )
+
 }

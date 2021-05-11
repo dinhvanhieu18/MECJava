@@ -36,6 +36,8 @@ public class GnbSimulator extends Object {
         else {
             process(message, currentTime, network);
             numTask -= 1;
+            sumSize -= message.size;
+            sumCpuCycle -= message.cpuCycle;
         }
     }
 }

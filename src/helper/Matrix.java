@@ -11,6 +11,7 @@ public class Matrix {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 data[i][j] = Math.random() * 2 - 1;
+                // data[i][j] = 0.0;
             }
         }
     }
@@ -90,6 +91,20 @@ public class Matrix {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 res.data[i][j] = this.data[i][j] * (1 - this.data[i][j]);
+            }
+        }
+        return res;
+    }
+
+    public void linear() {
+        return;
+    }
+
+    public Matrix dlinear() {
+        Matrix res = new Matrix(rows, cols);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                res.data[i][j] = 1;
             }
         }
         return res;

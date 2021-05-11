@@ -87,8 +87,12 @@ public class RsuSimulator extends Object{
                 process(message, currentTime, network);
             }
             numTask -= 1;
+            sumSize -= message.size;
+            sumCpuCycle -= message.cpuCycle;
             if (resGetAction.action != 3) {
                 resGetAction.nextLocation.numTask += 1;
+                resGetAction.nextLocation.sumSize += message.size;
+                resGetAction.nextLocation.sumCpuCycle += message.cpuCycle;
             }
         }
     }

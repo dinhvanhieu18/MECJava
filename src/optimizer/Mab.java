@@ -19,6 +19,7 @@ public class Mab extends Optimizer{
         values = new double[nActions];
         cntAction = new int[nActions];
         this.policy = MabMethod.getBehaviorPolicy();
+        this.cnt = 0;
     }
 
     public void updateReward(Message message, double delay) {
@@ -28,6 +29,7 @@ public class Mab extends Optimizer{
     public int getAction(Object object, Message message, Network network) {
         int action = policy.getAction(values);
         MabMethod.addToMemoryTmp(this, message, action);
+        this.cnt ++;
         return action;
     }
 }

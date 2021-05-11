@@ -21,6 +21,7 @@ public class NeuralNetwork {
         Matrix output = Matrix.multiply(weights_ho, hidden);
         output.add(bias_o);
         output.sigmoid();
+        // output.linear();
 
         return output.toArray();
     }
@@ -38,6 +39,7 @@ public class NeuralNetwork {
         Matrix target = Matrix.fromArray(y);
         Matrix error = Matrix.subtract(target, output);
         Matrix gradient = output.dsigmoid();
+        // Matrix gradient = output.dlinear();
         gradient.multiply(error);
         gradient.multiply(lr);
 

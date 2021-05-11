@@ -11,6 +11,7 @@ public class Optimizer {
     public int nStates;
     public int nActions;
     public Policy policy;
+    public int cnt;
 
     public void updateReward(Message message, double delay) {}
 

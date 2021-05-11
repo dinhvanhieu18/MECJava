@@ -3,6 +3,7 @@ package src.optimizer;
 import src.helper.Config;
 import src.helper.Memory;
 import src.helper.NeuralNetwork;
+// import src.helper.Utils;
 import src.object.Message;
 import src.object.Network;
 import src.object.Object;
@@ -14,7 +15,6 @@ public class Dqn extends Optimizer {
     public NeuralNetwork onlineModel;
     public NeuralNetwork targetModel;
     public Memory memory;
-    public int cnt;
     public boolean stable;
 
     public Dqn(String agentName, int nStates, int nActions) {
@@ -38,8 +38,35 @@ public class Dqn extends Optimizer {
         double[] state = object.getState(message, network);
         DqnMethod.updateState(this, message, state);
         double[] allActionValues = onlineModel.predict(state);
-        int actionByPolicy = policy.getAction(allActionValues);
+        int actionByPolicy;
+        if (Math.abs(allActionValues[0]-allActionValues[1]) < Config.minDelta || !this.stable) {
+            if (state.length == Config.nStatesCar) {
+                double delayTranferSendToRsu = state[2] + message.size * Config.carRsuMeanTranfer;
+                double delayProcessSendToRsu = state[3] + message.cpuCycle / Config.rsuProcessPerSecond;
+                double delaySendToRsu = delayTranferSendToRsu + delayProcessSendToRsu;
+
+                double delayTranferSendToGnb = state[4] + message.size * Config.carGnbMeanTranfer;
+                double delayProcessSendToGnb = state[5] + message.cpuCycle / Config.gnbProcessPerSecond;
+                double delaySendToGnb = delayTranferSendToGnb + delayProcessSendToGnb;
+
+                actionByPolicy = delaySendToRsu < delaySendToGnb ? 1 : 0;
+            }
+            else {
+                double delayProcess = state[2] + message.cpuCycle / Config.rsuProcessPerSecond;
+
+                double delayTranferSendToGnb = state[3] + message.size * Config.rsuGnbMeanTranfer;
+                double delayProcessSendToGnb = state[4] + message.cpuCycle / Config.gnbProcessPerSecond;
+                double delaySendToGnb = delayTranferSendToGnb + delayProcessSendToGnb;
+
+                actionByPolicy = delayProcess < delaySendToGnb ? 1 : 0;
+            }
+        }
+        else {
+            actionByPolicy = policy.getAction(allActionValues);
+        }
+        
         DqnMethod.addToMemoryTmp(this, message, state, actionByPolicy);
+        this.cnt ++;
         return actionByPolicy;
     }
 }

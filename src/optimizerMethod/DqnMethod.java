@@ -1,5 +1,6 @@
 package src.optimizerMethod;
 
+import src.behaviorPolicy.EpsilonDecay;
 import src.behaviorPolicy.Policy;
 import src.behaviorPolicy.SigmoidExplore;
 import src.helper.Config;
@@ -11,6 +12,7 @@ import src.optimizer.Dqn;
 public class DqnMethod {
     public static Policy getBehaviorPolicy() {
         Policy policy = new SigmoidExplore(Config.epsilon, Config.w);
+        // Policy policy = new EpsilonDecay(Config.epsilon);
         return policy;
     }
 
@@ -31,7 +33,6 @@ public class DqnMethod {
             if (memoryTmpE.experience.nextstate != null) {
                 dqn.memory.addToMemory(memoryTmpE.experience);
                 dqn.memory.memoryTmp.remove(i);
-                dqn.cnt ++;
             }
         }
         update(dqn);
@@ -46,7 +47,6 @@ public class DqnMethod {
         if (preState.experience.reward != 0.0) {
             dqn.memory.addToMemory(preState.experience);
             dqn.memory.removeLastMemoryTmp();
-            dqn.cnt ++;
         }
     }
 
@@ -75,10 +75,19 @@ public class DqnMethod {
         double reward = experience.reward;
         double[] nextState = experience.nextstate;
         double[] actionValuesForCurrentState = dqn.onlineModel.predict(currentState);
-        double[] actionValuesForNextState = dqn.targetModel.predict(nextState);
-        double maxValueNextState = Math.max(actionValuesForNextState[0], actionValuesForNextState[1]);
-        double targetActionValue = reward + dqn.gamma * maxValueNextState;
-        actionValuesForCurrentState[action] = targetActionValue;
+        if (dqn.stable) {
+            double[] actionValuesForNextState = dqn.targetModel.predict(nextState);
+            double maxValueNextState = Math.max(actionValuesForNextState[0], actionValuesForNextState[1]);
+            double targetActionValue = reward + dqn.gamma * maxValueNextState;
+            actionValuesForCurrentState[action] = targetActionValue;
+        }
+        else {
+            actionValuesForCurrentState[action] = 1.0;
+            actionValuesForCurrentState[1-action] = 0.0;
+            if (dqn.cnt >= Config.thresholdStable) {
+                dqn.stable = true;
+            }
+        }
         dqn.onlineModel.train(currentState, actionValuesForCurrentState);
     }
 }

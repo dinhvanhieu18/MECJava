@@ -115,9 +115,25 @@ public class Config {
     public static int nStatesCar = getInstance().getAsInteger("number_state_car");
 	public static int nActionsCar = getInstance().getAsInteger("number_action_car");
 
+	// Message
+	public static int maxSize = getInstance().getAsInteger("max_size");
+	public static int maxCpuCycle = getInstance().getAsInteger("max_cpu_cycle");
+
+	public static String messageSizeString = getInstance().getAsString("message_size");
+	static String[] messageSizeStrings = messageSizeString.split("_");
+	static String sizeString = messageSizeStrings[messageSizeStrings.length-1];
+	public static double messageSize = Double.parseDouble(sizeString);
+
+	public static String messageCpuString = getInstance().getAsString("message_size");
+	static String[] messageCpuStrings = messageCpuString.split("_");
+	static String cpuString = messageCpuStrings[messageCpuStrings.length-1];
+	public static double messageCpuCycle = Double.parseDouble(cpuString);
+
 	// Policy
 	public static double epsilon = getInstance().getAsDouble("epsilon");
 	public static double w = getInstance().getAsDouble("w");
+	public static double minEpsilon = getInstance().getAsDouble("min_epsilon");
+	public static double decayRateEpsilon = getInstance().getAsDouble("decay_rate_epsilon");
 
 	// DQN
 	public static double learningRate = getInstance().getAsDouble("learning_rate");
@@ -127,11 +143,12 @@ public class Config {
 	public static int timeUpdateOnlineModel = getInstance().getAsInteger("time_update_online_model");
 	public static int timeUpdateTargetModel = getInstance().getAsInteger("time_update_target_model");
 	public static int hiddenLayer = getInstance().getAsInteger("hidden_layer");
+	public static double minDelta = getInstance().getAsDouble("min_delta");
 
 	// MAB + DQN
 	public static double minProbChooseMab = getInstance().getAsDouble("min_prob_choose_mab");
 	public static double decayRateChooseMab = getInstance().getAsDouble("decay_rate_prob_choose_mab");
-	public static double thresholdStable = getInstance().getAsDouble("threadhold_stable");
+	public static int thresholdStable = getInstance().getAsInteger("threadhold_stable");
 
 	// Other
 	public static double decayRateMean = getInstance().getAsDouble("decay_rate_mean");
@@ -146,7 +163,7 @@ public class Config {
 	public static String messageDetail = getInstance().getAsString("message_detail");
 	public static String loggingFile = getInstance().getAsString("logging_file");
 	public static String resultFolder = getInstance().getAsString("result_folder");
-	public static String expName = getInstance().getAsString("expName");
+	public static String expName = getInstance().getAsString("exp_name");
 	public static String optimizer = getInstance().getAsString("optimizer");
 	
 	static String[] carPackageStrategyStrings = carPackageStrategy.split("_");

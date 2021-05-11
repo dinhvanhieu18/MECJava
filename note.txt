@@ -1,0 +1,3 @@
+ddooir policy kham pha
+doi sigmoid sang linear
+tune min_delta

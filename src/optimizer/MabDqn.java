@@ -18,7 +18,7 @@ public class MabDqn extends Optimizer{
         this.policy = MabDqnMethod.getBehaviorPolicy();
         this.mab = new Mab(agentName, nStates, nActions);
         this.dqn = new Dqn(agentName, nStates, nActions);
-        this.probChooseMab = 1.0;
+        this.cnt = 0;
         this.stable = false;
     }
 

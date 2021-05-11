@@ -46,28 +46,27 @@ public class MabDqnMethod {
         else {
             // Update mab
             mabDqn.mab.updateReward(message, delay);
-            // update probChooseMab
-            if (mabDqn.probChooseMab > Config.minProbChooseMab) {
-                mabDqn.probChooseMab *= Config.decayRateChooseMab;
-            } 
+            // // update probChooseMab
+            // if (mabDqn.probChooseMab > Config.minProbChooseMab) {
+            //     mabDqn.probChooseMab *= Config.decayRateChooseMab;
+            // } 
             // Update online model with groundtruth get from mab
-            double[] values = mabDqn.mab.values;
-            double[] target = new double[values.length];
-            if (values[0] > values[1]) {
-                target[0] = 1.0;
-            }
-            else {
-                target[1] = 1.0;
-            }
+            double[] target = mabDqn.mab.values;
             mabDqn.dqn.onlineModel.train(state, target);
-            if (mabDqn.probChooseMab <= Config.minProbChooseMab) {
+
+            if (checkStable(mabDqn)) {
                 mabDqn.stable = true;
                 mabDqn.dqn.targetModel.setWeights(mabDqn.dqn.onlineModel.getWeights());
             }
         }
     }
 
+    public static boolean checkStable(MabDqn mabDqn) {
+        return mabDqn.cnt > Config.thresholdStable ? true : false;
+    }
+
     public static int getAction(MabDqn mabDqn, Object object, Message message, Network network) {
+        mabDqn.cnt ++;
         if (mabDqn.stable) {
             return mabDqn.dqn.getAction(object, message, network);
         }

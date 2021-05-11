@@ -24,6 +24,8 @@ public class Object {
     public int cntSendToGnb = 0;
     public int cntDrop = 0;
     public int numTask = 0;
+    public double sumSize = 0.0;
+    public double sumCpuCycle = 0.0;
 
     public void collectMessage(double currentTime, Network network) {
         while (!waitList.isEmpty()) {
