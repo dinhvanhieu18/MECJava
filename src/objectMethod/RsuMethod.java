@@ -27,13 +27,16 @@ public class RsuMethod {
 
     public static double[] getState(RsuSimulator rsu, Message message, Network network) {
         double[] res = new double[Config.nStatesRsu];
-        res[0] = rsu.meanDelayProcess;
-        res[1] = rsu.meanDelaySendToGnb;
-        res[2] = rsu.sumCpuCycle / Config.rsuProcessPerSecond;
-        res[3] = network.gnb.sumSize * Config.rsuGnbMeanTranfer;
-        res[4] = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
-        res[5] = message.size;
-        res[6] = message.cpuCycle;
+        // res[0] = rsu.meanDelayProcess;
+        // res[1] = rsu.meanDelaySendToGnb;
+        res[0] = rsu.sumCpuCycle / Config.rsuProcessPerSecond;
+        // res[3] = network.gnb.sumSize * Config.rsuGnbMeanTranfer;
+        res[1] = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
+        res[2] = message.size;
+        res[3] = message.cpuCycle;
+        res[4] = rsu.preProcess;
+        res[5] = network.gnb.preReceiveFromRsu;
+        res[6] = network.gnb.preProcess;
         return res;
     }
 

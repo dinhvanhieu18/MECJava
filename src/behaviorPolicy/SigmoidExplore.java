@@ -17,6 +17,7 @@ public class SigmoidExplore extends Policy{
         Random random = new Random();
         double rand = random.nextDouble();
         if (rand < epsilon) {
+            // return random.nextInt(2);
             return values[0] >= values[1] ? 1 : 0;
         }
         else {

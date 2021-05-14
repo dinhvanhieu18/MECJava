@@ -6,6 +6,7 @@ import src.object.RsuSimulator;
 import src.optimizer.Mab;
 import src.optimizer.MabDqn;
 import src.optimizer.Dqn;
+import src.optimizer.Heristic;
 import src.optimizer.Optimizer;
 import src.object.CarSimulator;
 import src.object.Message;
@@ -36,6 +37,9 @@ public class Utils {
         }
         else if (Config.optimizer.equals("MAB_DQN")) {
             optimizer = new MabDqn(agentName, nStates, nActions);
+        }
+        else if (Config.optimizer.equals("heristic")) {
+            optimizer = new Heristic(agentName, nStates, nActions);
         }
         return optimizer;
     }

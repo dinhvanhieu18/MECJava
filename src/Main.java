@@ -48,7 +48,7 @@ public class Main {
         }
         else {
             for (File file : dumpDetailFolder.listFiles()) {
-                file.delete();
+                file.delete(); 
             }
         }
         ArrayList<RsuSimulator> rsuList = getRsuList();

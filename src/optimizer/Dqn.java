@@ -3,10 +3,13 @@ package src.optimizer;
 import src.helper.Config;
 import src.helper.Memory;
 import src.helper.NeuralNetwork;
+import src.helper.Utils;
+import src.object.CarSimulator;
 // import src.helper.Utils;
 import src.object.Message;
 import src.object.Network;
 import src.object.Object;
+import src.object.RsuSimulator;
 import src.optimizerMethod.DqnMethod;
 
 public class Dqn extends Optimizer {
@@ -16,6 +19,8 @@ public class Dqn extends Optimizer {
     public NeuralNetwork targetModel;
     public Memory memory;
     public boolean stable;
+    public double rewardRsu = 0.0;
+    public double rewardGnb = 0.0;
 
     public Dqn(String agentName, int nStates, int nActions) {
         this.agentName = agentName;
@@ -39,32 +44,108 @@ public class Dqn extends Optimizer {
         DqnMethod.updateState(this, message, state);
         double[] allActionValues = onlineModel.predict(state);
         int actionByPolicy;
-        if (Math.abs(allActionValues[0]-allActionValues[1]) < Config.minDelta || !this.stable) {
-            if (state.length == Config.nStatesCar) {
-                double delayTranferSendToRsu = state[2] + message.size * Config.carRsuMeanTranfer;
-                double delayProcessSendToRsu = state[3] + message.cpuCycle / Config.rsuProcessPerSecond;
-                double delaySendToRsu = delayTranferSendToRsu + delayProcessSendToRsu;
+        if (Math.abs(allActionValues[0]-allActionValues[1]) < Config.minDelta || this.cnt < Config.thresholdStable) {
+            if (object instanceof CarSimulator) {
+                CarSimulator car = (CarSimulator) object;
+                double tranferTime = Utils.getNext(1.0 / Config.carRsuMeanTranfer) * message.size;
+                double selectedTime = Math.max(car.neighborRsu.preReceiveFromCar, message.currentTime);
+                double receiveTime = tranferTime + selectedTime;
 
-                double delayTranferSendToGnb = state[4] + message.size * Config.carGnbMeanTranfer;
-                double delayProcessSendToGnb = state[5] + message.cpuCycle / Config.gnbProcessPerSecond;
-                double delaySendToGnb = delayTranferSendToGnb + delayProcessSendToGnb;
+                double processTime = Utils.getNext(Config.rsuProcessPerSecond) * message.cpuCycle;
+                selectedTime = Math.max(car.neighborRsu.preProcess, receiveTime);
+                double processedTime = processTime + selectedTime;
 
-                actionByPolicy = delaySendToRsu < delaySendToGnb ? 1 : 0;
+                tranferTime = Utils.getNext(1.0 / Config.rsuCarMeanTranfer) * message.size;
+                selectedTime = Math.max(car.preReceiveFromRsu, processedTime);
+                receiveTime = tranferTime + selectedTime;
+                double delaySendToRsu = receiveTime - message.currentTime;
+                this.rewardRsu = - delaySendToRsu;
+                boolean dropRsu = false;
+                if (car.getPosition(receiveTime) > Config.roadLength || (
+                    car.neighborRsu.distanceToCar(car, receiveTime) > Config.rsuCoverRadius)) {
+                        dropRsu = true;
+                }
+        
+
+                tranferTime = Utils.getNext(1.0 / Config.carGnbMeanTranfer) * message.size;
+                selectedTime = Math.max(network.gnb.preReceiveFromCar, message.currentTime);
+                receiveTime = tranferTime + selectedTime;
+
+                processTime = Utils.getNext(Config.gnbProcessPerSecond) * message.cpuCycle;
+                selectedTime = Math.max(network.gnb.preProcess, receiveTime);
+                processedTime = processTime + selectedTime;
+
+                tranferTime = Utils.getNext(1.0 / Config.gnbCarMeanTranfer) * message.size;
+                selectedTime = Math.max(car.preReceiveFromGnb, processedTime);
+                receiveTime = tranferTime + selectedTime;
+                double delaySendToGnb = receiveTime - message.currentTime;
+                this.rewardGnb = - delaySendToGnb;
+                boolean dropGnb = false;
+
+                if (car.getPosition(receiveTime) > Config.roadLength) {
+                    dropGnb = true;
+                }
+
+                if ((!dropRsu && !dropGnb) || (dropRsu && dropGnb)) {
+                    actionByPolicy = delaySendToRsu < delaySendToGnb ? 1 : 0;
+                }
+                else {
+                    actionByPolicy = dropRsu ? 0 : 1;
+                }
             }
+
             else {
-                double delayProcess = state[2] + message.cpuCycle / Config.rsuProcessPerSecond;
+                RsuSimulator rsu = (RsuSimulator) object;
+                CarSimulator car = network.carList.get(message.indexCar.get(0));
 
-                double delayTranferSendToGnb = state[3] + message.size * Config.rsuGnbMeanTranfer;
-                double delayProcessSendToGnb = state[4] + message.cpuCycle / Config.gnbProcessPerSecond;
-                double delaySendToGnb = delayTranferSendToGnb + delayProcessSendToGnb;
+                double processTime = Utils.getNext(Config.rsuProcessPerSecond) * message.cpuCycle;
+                double selectedTime = Math.max(rsu.preProcess, message.currentTime);
+                double processedTime = processTime + selectedTime;
 
-                actionByPolicy = delayProcess < delaySendToGnb ? 1 : 0;
+                double tranferTime = Utils.getNext(1.0 / Config.rsuCarMeanTranfer) * message.size;
+                selectedTime = Math.max(car.preReceiveFromRsu, processedTime);
+                double receiveTime = tranferTime + selectedTime;
+                double delayProcess = receiveTime - message.currentTime;
+                this.rewardRsu = -delayProcess;
+                boolean dropRsu = false;
+                if (car.getPosition(receiveTime) > Config.roadLength || (
+                    car.neighborRsu.distanceToCar(car, receiveTime) > Config.rsuCoverRadius)) {
+                        dropRsu = true;
+                }
+
+
+                tranferTime = Utils.getNext(1.0 / Config.rsuGnbMeanTranfer) * message.size;
+                selectedTime = Math.max(network.gnb.preReceiveFromRsu, message.currentTime);
+                receiveTime = tranferTime + selectedTime;
+
+                processTime = Utils.getNext(Config.gnbProcessPerSecond) * message.cpuCycle;
+                selectedTime = Math.max(network.gnb.preProcess, receiveTime);
+                processedTime = processTime + selectedTime;
+
+                tranferTime = Utils.getNext(1.0 / Config.gnbCarMeanTranfer) * message.size;
+                selectedTime = Math.max(car.preReceiveFromGnb, processedTime);
+                receiveTime = tranferTime + selectedTime;
+                double delaySendToGnb = receiveTime - message.currentTime;
+                this.rewardGnb = - delaySendToGnb;
+                boolean dropGnb = false;
+
+                if (car.getPosition(receiveTime) > Config.roadLength) {
+                    dropGnb = true;
+                }
+
+                if ((!dropRsu && !dropGnb) || (dropRsu && dropGnb)) {
+                    actionByPolicy = delayProcess < delaySendToGnb ? 1 : 0;
+                }
+                else {
+                    actionByPolicy = dropRsu ? 0 : 1;
+                }
+
             }
         }
         else {
             actionByPolicy = policy.getAction(allActionValues);
         }
-        
+        // actionByPolicy = policy.getAction(allActionValues);
         DqnMethod.addToMemoryTmp(this, message, state, actionByPolicy);
         this.cnt ++;
         return actionByPolicy;

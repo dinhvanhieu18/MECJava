@@ -48,14 +48,18 @@ public class CarMethod {
 
     public static double[] getState(CarSimulator car, Message message, Network network) {
         double[] res = new double[Config.nStatesCar];
-        res[0] = car.meanDelaySendToRsu;
-        res[1] = car.meanDelaySendToGnb;
-        res[2] = car.neighborRsu.sumSize * Config.carRsuMeanTranfer;
-        res[3] = car.neighborRsu.sumCpuCycle / Config.rsuProcessPerSecond;
-        res[4] = network.gnb.sumSize * Config.carGnbMeanTranfer;
-        res[5] = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
-        res[6] = message.size;
-        res[7] = message.cpuCycle;
+        // res[0] = car.meanDelaySendToRsu;
+        // res[1] = car.meanDelaySendToGnb;
+        // res[2] = car.neighborRsu.sumSize * Config.carRsuMeanTranfer;
+        res[0] = car.neighborRsu.sumCpuCycle / Config.rsuProcessPerSecond;
+        // res[4] = network.gnb.sumSize * Config.carGnbMeanTranfer;
+        res[1] = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
+        res[2] = message.size;
+        res[3] = message.cpuCycle;
+        res[4] = car.neighborRsu.preReceiveFromCar;
+        res[5] = car.neighborRsu.preProcess;
+        res[6] = network.gnb.preReceiveFromCar;
+        res[7] = network.gnb.preProcess;
         return res;
     }
 

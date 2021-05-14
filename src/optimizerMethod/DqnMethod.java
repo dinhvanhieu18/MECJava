@@ -1,6 +1,6 @@
 package src.optimizerMethod;
 
-import src.behaviorPolicy.EpsilonDecay;
+// import src.behaviorPolicy.EpsilonDecay;
 import src.behaviorPolicy.Policy;
 import src.behaviorPolicy.SigmoidExplore;
 import src.helper.Config;
@@ -82,12 +82,16 @@ public class DqnMethod {
             actionValuesForCurrentState[action] = targetActionValue;
         }
         else {
-            actionValuesForCurrentState[action] = 1.0;
-            actionValuesForCurrentState[1-action] = 0.0;
+            actionValuesForCurrentState[0] = dqn.rewardGnb;
+            actionValuesForCurrentState[1] = dqn.rewardRsu;
             if (dqn.cnt >= Config.thresholdStable) {
                 dqn.stable = true;
             }
         }
+        double[] actionValuesForNextState = dqn.targetModel.predict(nextState);
+        double maxValueNextState = Math.max(actionValuesForNextState[0], actionValuesForNextState[1]);
+        double targetActionValue = reward + dqn.gamma * maxValueNextState;
+        actionValuesForCurrentState[action] = targetActionValue;
         dqn.onlineModel.train(currentState, actionValuesForCurrentState);
     }
 }
