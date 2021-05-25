@@ -15,7 +15,7 @@ public class Main {
         String[] xList = Config.xList.split(";");
         String[] yList = Config.yList.split(";");
         String[] zList = Config.zList.split(";");
-        for (int i = 0; i < Config.rsuNumbers; i++) {
+           for (int i = 0; i < Config.rsuNumbers; i++) {
             double xcord = Double.parseDouble(xList[i]);
             double ycord = Double.parseDouble(yList[i]);
             double zcord = Double.parseDouble(zList[i]);

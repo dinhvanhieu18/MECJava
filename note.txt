@@ -2,7 +2,7 @@ ddooir policy kham pha
 doi sigmoid sang linear
 tune min_delta
 
-sua cai time khi tranfer
-sua state
-random khi hieu reward nho
-cho quang duong dai ra
+sua cai time khi tranfer => Done
+sua state => Done
+random khi hieu reward nho => Done => kqua tot
+cho quang duong dai ra => Can them rsu => wait => Done

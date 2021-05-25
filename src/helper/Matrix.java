@@ -10,8 +10,8 @@ public class Matrix {
         this.cols = cols;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                // data[i][j] = Math.random() * 2 - 1;
-                data[i][j] = 0.0;
+                data[i][j] = Math.random() * 2 - 1;
+                // data[i][j] = 0.0;
             }
         }
     }

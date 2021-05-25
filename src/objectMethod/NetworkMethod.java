@@ -12,7 +12,7 @@ public class NetworkMethod {
         network.totalOutsize += network.output.size();
         try {
             FileWriter fileWriterDelayDetail = new FileWriter(Config.dumpDelayDetailPath, true);
-            FileWriter fileWriterMessageDetail = new FileWriter(Config.MessageDetailPath, true);
+            // FileWriter fileWriterMessageDetail = new FileWriter(Config.MessageDetailPath, true);
             for (Message mes : network.output) {
                 double delay = mes.currentTime - mes.startTime;
                 network.maxDelay = Math.max(delay, network.maxDelay);
@@ -23,8 +23,8 @@ public class NetworkMethod {
                     network.meanDelay += delay;
                 }
                 mes.setType();
-                fileWriterMessageDetail.write(mes.stt + "\t" + mes.indexCar.get(0) + "\t" + mes.startTime + 
-                                        " \t" + mes.currentTime + "\t" + delay + "\t" + mes.type + "\n");    
+                // fileWriterMessageDetail.write(mes.stt + "\t" + mes.indexCar.get(0) + "\t" + mes.startTime + 
+                //                         " \t" + mes.currentTime + "\t" + delay + "\t" + mes.type + "\n");    
                 if (mes.indexRsu.size() > 0) {
                     if (mes.locations.contains(2)) {
                         network.cntType3 ++;
@@ -38,9 +38,9 @@ public class NetworkMethod {
                                 "\t" + network.totalOutsize + "\t" + network.countDrop + "\n");   
             network.output.clear();
             fileWriterDelayDetail.flush();
-            fileWriterMessageDetail.flush();
+            // fileWriterMessageDetail.flush();
             fileWriterDelayDetail.close();
-            fileWriterMessageDetail.close();   
+            // fileWriterMessageDetail.close();   
         } catch (Exception e) {
             e.printStackTrace();
         }

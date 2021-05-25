@@ -27,16 +27,29 @@ public class RsuMethod {
 
     public static double[] getState(RsuSimulator rsu, Message message, Network network) {
         double[] res = new double[Config.nStatesRsu];
-        // res[0] = rsu.meanDelayProcess;
-        // res[1] = rsu.meanDelaySendToGnb;
-        res[0] = rsu.sumCpuCycle / Config.rsuProcessPerSecond;
-        // res[3] = network.gnb.sumSize * Config.rsuGnbMeanTranfer;
-        res[1] = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
-        res[2] = message.size;
-        res[3] = message.cpuCycle;
-        res[4] = rsu.preProcess;
-        res[5] = network.gnb.preReceiveFromRsu;
-        res[6] = network.gnb.preProcess;
+        // Info message
+        double currentTime = message.currentTime;
+        double tranferTimeRsuToGnb = message.size * Config.rsuGnbMeanTranfer;
+        double tranferTimeGnbToCar = message.size * Config.gnbCarMeanTranfer;
+        double processTimeRsu = message.cpuCycle * Config.rsuProcessPerSecond;
+        double processTimeGnb = message.cpuCycle * Config.gnbProcessPerSecond;
+        res[0] = message.size;
+        res[1] = message.cpuCycle;
+        res[2] = tranferTimeRsuToGnb;
+        res[3] = tranferTimeGnbToCar;
+        res[4] = processTimeRsu;
+        res[5] = processTimeGnb;
+        // Estimate time need process of rsu and gnb
+        double timeNeedProcessRsu = rsu.sumCpuCycle / Config.rsuProcessPerSecond;
+        double timeNeedProcessGnb = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
+        // Estimate receive time
+        double timeGnbReceive = Math.max(currentTime + tranferTimeRsuToGnb, network.gnb.preReceiveFromCar); 
+        // estimate time delay tranfer + receive
+        res[6] = timeGnbReceive - currentTime;
+        // estimate time delay process
+        res[7] = Math.max(rsu.preProcess + timeNeedProcessRsu, currentTime) + processTimeRsu - currentTime;
+        res[8] = Math.max(network.gnb.preProcess + timeNeedProcessGnb, timeGnbReceive) + processTimeGnb - timeGnbReceive;
+        
         return res;
     }
 

@@ -1,7 +1,5 @@
 package src.optimizer;
 
-import java.util.Hashtable;
-
 import src.helper.Config;
 import src.helper.Utils;
 import src.object.CarSimulator;
@@ -12,13 +10,12 @@ import src.object.RsuSimulator;
 
 public class Heristic extends Optimizer{
     public double[] values;
-    public int[] cntAction; 
-    public Hashtable<Integer, Integer> memory = new Hashtable<>();
 
     public Heristic(String agentName, int nStates, int nActions) {
         this.agentName = agentName;
         this.nStates = nStates;
         this.nActions = nActions;
+        this.values = new double[nActions];
     }
 
 
@@ -62,6 +59,9 @@ public class Heristic extends Optimizer{
             if (car.getPosition(receiveTime) > Config.roadLength) {
                 dropGnb = true;
             }
+
+            values[0] = delaySendToGnb;
+            values[1] = delaySendToRsu;
 
             if ((!dropRsu && !dropGnb) || (dropRsu && dropGnb)) {
                 actionByPolicy = delaySendToRsu < delaySendToGnb ? 1 : 0;
@@ -107,6 +107,9 @@ public class Heristic extends Optimizer{
             if (car.getPosition(receiveTime) > Config.roadLength) {
                 dropGnb = true;
             }
+
+            values[0] = delaySendToGnb;
+            values[1] = delayProcess;
 
             if ((!dropRsu && !dropGnb) || (dropRsu && dropGnb)) {
                 actionByPolicy = delayProcess < delaySendToGnb ? 1 : 0;

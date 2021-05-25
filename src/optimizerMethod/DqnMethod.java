@@ -75,19 +75,19 @@ public class DqnMethod {
         double reward = experience.reward;
         double[] nextState = experience.nextstate;
         double[] actionValuesForCurrentState = dqn.onlineModel.predict(currentState);
-        if (dqn.stable) {
-            double[] actionValuesForNextState = dqn.targetModel.predict(nextState);
-            double maxValueNextState = Math.max(actionValuesForNextState[0], actionValuesForNextState[1]);
-            double targetActionValue = reward + dqn.gamma * maxValueNextState;
-            actionValuesForCurrentState[action] = targetActionValue;
-        }
-        else {
-            actionValuesForCurrentState[0] = dqn.rewardGnb;
-            actionValuesForCurrentState[1] = dqn.rewardRsu;
-            if (dqn.cnt >= Config.thresholdStable) {
-                dqn.stable = true;
-            }
-        }
+        // if (dqn.stable) {
+        //     double[] actionValuesForNextState = dqn.targetModel.predict(nextState);
+        //     double maxValueNextState = Math.max(actionValuesForNextState[0], actionValuesForNextState[1]);
+        //     double targetActionValue = reward + dqn.gamma * maxValueNextState;
+        //     actionValuesForCurrentState[action] = targetActionValue;
+        // }
+        // else {
+        //     actionValuesForCurrentState[0] = dqn.rewardGnb;
+        //     actionValuesForCurrentState[1] = dqn.rewardRsu;
+        //     if (dqn.cnt >= Config.thresholdStable) {
+        //         dqn.stable = true;
+        //     }
+        // }
         double[] actionValuesForNextState = dqn.targetModel.predict(nextState);
         double maxValueNextState = Math.max(actionValuesForNextState[0], actionValuesForNextState[1]);
         double targetActionValue = reward + dqn.gamma * maxValueNextState;

@@ -48,18 +48,31 @@ public class CarMethod {
 
     public static double[] getState(CarSimulator car, Message message, Network network) {
         double[] res = new double[Config.nStatesCar];
-        // res[0] = car.meanDelaySendToRsu;
-        // res[1] = car.meanDelaySendToGnb;
-        // res[2] = car.neighborRsu.sumSize * Config.carRsuMeanTranfer;
-        res[0] = car.neighborRsu.sumCpuCycle / Config.rsuProcessPerSecond;
-        // res[4] = network.gnb.sumSize * Config.carGnbMeanTranfer;
-        res[1] = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
-        res[2] = message.size;
-        res[3] = message.cpuCycle;
-        res[4] = car.neighborRsu.preReceiveFromCar;
-        res[5] = car.neighborRsu.preProcess;
-        res[6] = network.gnb.preReceiveFromCar;
-        res[7] = network.gnb.preProcess;
+        // Info message
+        double currentTime = message.currentTime;
+        double tranferTimeCarToRsu =  message.size * Config.carRsuMeanTranfer;
+        double tranferTimeCarToGnb =  message.size * Config.carGnbMeanTranfer;
+        double processTimeRsu = message.cpuCycle * Config.rsuProcessPerSecond;
+        double processTimeGnb = message.cpuCycle * Config.gnbProcessPerSecond;
+        res[0] = message.size;
+        res[1] = message.cpuCycle;
+        res[2] = tranferTimeCarToRsu;
+        res[3] = tranferTimeCarToGnb;
+        res[4] = processTimeRsu;
+        res[5] = processTimeGnb;
+        // Estimate time need process of rsu and gnb
+        double timeNeedProcessRsu = car.neighborRsu.sumCpuCycle / Config.rsuProcessPerSecond;
+        double timeNeedProcessGnb = network.gnb.sumCpuCycle / Config.gnbProcessPerSecond;
+        // Estimate receive time
+        double timeRsuReceive = Math.max(currentTime + tranferTimeCarToRsu, car.neighborRsu.preReceiveFromCar);
+        double timeGnbReceive = Math.max(currentTime + tranferTimeCarToGnb, network.gnb.preReceiveFromCar);
+        // estimate time delay tranfer + receive
+        res[6] = timeRsuReceive - currentTime;
+        res[7] = timeGnbReceive - currentTime;
+        // estimate time delay process
+        res[8] = Math.max(car.neighborRsu.preProcess + timeNeedProcessRsu, timeRsuReceive) + processTimeRsu - timeRsuReceive;
+        res[9] = Math.max(network.gnb.preProcess + timeNeedProcessGnb, timeGnbReceive) + processTimeGnb - timeGnbReceive;
+        
         return res;
     }
 

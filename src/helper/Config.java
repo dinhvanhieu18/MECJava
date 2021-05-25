@@ -151,6 +151,7 @@ public class Config {
 	public static int thresholdStable = getInstance().getAsInteger("threadhold_stable");
 
 	// Other
+	public static double defaultDropTime = getInstance().getAsDouble("default_drop_time");
 	public static double decayRateMean = getInstance().getAsDouble("decay_rate_mean");
 	public static double pL = getInstance().getAsDouble("default_pl");
 	public static double pR = getInstance().getAsDouble("default_pr");

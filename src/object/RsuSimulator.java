@@ -21,44 +21,11 @@ public class RsuSimulator extends Object{
         this.optimizer = Utils.getOptimizer("rsu_"+id, Config.nStatesRsu, Config.nActionsRsu);
     }
 
-    public void sendToCar(CarSimulator car, Message message, double currentTime, Network network) {
-        message.indexCar.add(car.id);
-
-        simulateTranferTime(car.preReceiveFromRsu, Config.rsuCarMeanTranfer, message);
-        message.locations.add(0);
-        car.preReceiveFromRsu = message.currentTime;
-
-        addToNextPosition(car, message, currentTime, network);
-    }
-
-    public void sendToRsu(RsuSimulator rsu, Message message, double currentTime, Network network) {
-        message.indexRsu.add(rsu.id);
-
-        simulateTranferTime(rsu.preReceiveFromRsu, Config.rsuRsuMeanTranfer, message);
-        message.locations.add(1);
-        rsu.preReceiveFromRsu = message.currentTime;
-
-        addToNextPosition(rsu, message, currentTime, network);
-    }
-
-    public void sendToGnb(GnbSimulator gnb, Message message, double currentTime, Network network) {
-        simulateTranferTime(gnb.preReceiveFromRsu, Config.rsuGnbMeanTranfer, message);
-        message.locations.add(2);
-        gnb.preReceiveFromRsu = message.currentTime;
-
-        addToNextPosition(gnb, message, currentTime, network);
-    }
-
-    public void process(Message message, double currentTime, Network network) {
-        simulateProcessTime(Config.rsuProcessPerSecond, message);
-        addToNextPosition(this, message, currentTime, network);
-    }
-
     public void working(Message message, double currentTime, Network network) {
         if (message.isDone) {
             int rsuId = message.indexRsu.get(0);
             if (rsuId != this.id) {
-                sendToRsu(network.rsuList.get(rsuId), message, currentTime, network);
+                sendToRsu(network.rsuList.get(rsuId), message, Config.rsuRsuMeanTranfer, currentTime, network);
                 return;
             }
             CarSimulator startCar = network.carList.get(message.indexCar.get(0));
@@ -72,19 +39,19 @@ public class RsuSimulator extends Object{
                 }
             }
             else {
-                sendToCar(startCar, message, currentTime, network);
+                sendToCar(startCar, message, Config.rsuCarMeanTranfer, currentTime, network);
             }
         }
         else {
             ResGetAction resGetAction = RsuMethod.getAction(this, message, currentTime, network);
             if (resGetAction.action == 1) {
-                sendToRsu((RsuSimulator)resGetAction.nextLocation, message, currentTime, network);
+                sendToRsu((RsuSimulator)resGetAction.nextLocation, message, Config.rsuRsuMeanTranfer, currentTime, network);
             }
             else if (resGetAction.action == 2) {
-                sendToGnb((GnbSimulator)resGetAction.nextLocation, message, currentTime, network);
+                sendToGnb((GnbSimulator)resGetAction.nextLocation, message, Config.rsuGnbMeanTranfer, currentTime, network);
             }
             else {
-                process(message, currentTime, network);
+                process(message, Config.rsuProcessPerSecond, currentTime, network);
             }
             numTask -= 1;
             sumSize -= message.size;
